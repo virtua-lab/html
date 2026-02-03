@@ -258,6 +258,42 @@
       color: var(--text);
     }
 
+    /* Tabs Style */
+    .nav-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      background: rgba(30, 41, 59, 0.5);
+      padding: 0.5rem;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .nav-tab {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .nav-tab:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-tab.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4);
+    }
+
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -366,7 +402,7 @@
       }
     }
   </style>
-  <script type="module" crossorigin src="./assets/index-BEGllbnp.js"></script>
+  <script type="module" crossorigin src="./assets/index-CH1PD8jv.js"></script>
 </head>
 
 <body>
@@ -380,7 +416,18 @@
       <i data-lucide="settings" size="24"></i>
     </div>
 
-    <main class="upload-card" id="main-card">
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-target="view-pdf">
+        <i data-lucide="file-text" size="18"></i> PDF変換
+      </button>
+      <button class="nav-tab" data-target="view-shortener">
+        <i data-lucide="link" size="18"></i> URL短縮
+      </button>
+    </div>
+
+    <!-- View 1: PDF Converter (Existing) -->
+    <main class="upload-card tab-content active" id="view-pdf">
       <div class="drop-zone" id="drop-zone">
         <input type="file" id="file-input" accept="application/pdf" style="display: none;">
         <div class="icon-box">
@@ -441,6 +488,49 @@
           style="margin-top: 1rem; background: rgba(255,255,255,0.1);">
           念のためzipも保存する
         </button>
+      </div>
+    </main>
+
+    <!-- View 2: URL Shortener (New) -->
+    <main class="upload-card tab-content" id="view-shortener" style="display: none;">
+      <div style="text-align: left; margin-bottom: 2rem;">
+        <div class="input-group">
+          <label style="color:#94a3b8; margin-bottom:0.5rem; display:block;">飛び先のURL (リダイレクト先)</label>
+          <input type="url" id="target-url" placeholder="https://..."
+            style="width:100%; padding:1rem; border-radius:12px; background:rgba(0,0,0,0.2); border:1px solid var(--border); color:white; font-family:monospace;">
+        </div>
+
+        <div class="input-group" style="margin-top:1.5rem;">
+          <label style="color:#94a3b8; margin-bottom:0.5rem; display:block;">短縮URLの末尾 (ID)</label>
+          <div style="display:flex; align-items:center;">
+            <span
+              style="color:#64748b; font-family:monospace; margin-right:8px; white-space:nowrap;">vsp-official/</span>
+            <input type="text" id="short-id-input" placeholder="指定なしでランダム"
+              style="width:100%; padding:1rem; border-radius:12px; background:rgba(0,0,0,0.2); border:1px solid var(--border); color:white; font-family:monospace;">
+          </div>
+        </div>
+      </div>
+
+      <button id="create-short-btn" class="btn" style="display:block;">
+        <span class="btn-text">短縮URLを作成する</span>
+        <div class="spinner" id="short-spinner"></div>
+      </button>
+
+      <div id="short-result"
+        style="display:none; margin-top:2rem; background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.2); border-radius:16px; padding:1.5rem; text-align:left;">
+        <div class="result-title">
+          <i data-lucide="check-circle" size="20"></i>
+          <span>作成完了！</span>
+        </div>
+        <p class="url-label" style="text-align:left; margin-bottom:0.5rem; font-size:0.9rem; color:#94a3b8;">
+          このURLにアクセスすると自動転送されます:</p>
+        <div class="url-box">
+          <span class="url-text" id="short-url-output"></span>
+          <button class="copy-btn" id="copy-short-url">
+            <i data-lucide="copy" size="18"></i>
+          </button>
+        </div>
+        <p class="status-info">※ GitHub Pagesの反映には1～3分かかります。</p>
       </div>
     </main>
 
